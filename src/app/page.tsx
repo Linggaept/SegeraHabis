@@ -1,10 +1,32 @@
+"use client"
+
 import CarouselLanding from "@/components/Carousel";
 import Navbar from "./Navbar";
 import Card from "@/components/Card";
 import Category from "@/components/Category";
 import Footer from "./Footer";
+import { useEffect, useState } from "react";
+import { fetchProducts } from "@/services/helper/productApi";
 
 export default function Home() {
+
+  const [products, setProducts] = useState([]);
+  
+  useEffect(() => {
+    const getProduct = async () => {
+      try {
+        const data = await fetchProducts();
+        setProducts(data);
+      } catch (error) {
+        console.log("Failed to fetch products: ", error);
+      }
+    };
+
+    getProduct();
+  }, []);
+
+  
+
   return (
     <>
       <Navbar />
@@ -35,12 +57,10 @@ export default function Home() {
             <h1 className="text-2xl font-extrabold text-black py-5">
               Produk Kami
             </h1>
-            <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-5">
-              <Card />
-              <Card />
-              <Card />
-              <Card />
-              <Card />
+            <div className="w-full grid grid-cols-2 md:grid-cols-5 gap-5">
+              {products.map((product: any) => (
+                <Card key={product.id} product={product} />
+              ))}
             </div>
           </div>
         </div>

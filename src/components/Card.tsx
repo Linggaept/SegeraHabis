@@ -2,30 +2,39 @@ import Image from "next/image";
 import Link from "next/link";
 import { SlCalender } from "react-icons/sl";
 
-const Card = () => {
+interface ProductProps {
+  product: {
+    id: number;
+    title: string;
+    price: number;
+    image: string;
+  };
+}
+
+const Card = ({ product } : ProductProps) => {
   return (
-    <Link href={"/"}>
+    <Link href={`/Product/${product.id}`}>
       <div className="max-w-sm bg-white border-2 border-gray-200 rounded-lg shadow">
         <div className="flex flex-col">
           <Image
-            src={"/img/carousel/SegeraHabis_Slider_1.png"}
-            alt="SegeraHabis_Slider_1"
+            src={product.image}
+            alt={product.title}
             width={3000}
             height={3000}
             className="w-full h-full object-cover aspect-square rounded-t-lg"
           />
           <div className="w-full p-5 flex flex-col gap-3">
-            <div className="flex">
+            <div className="flex h-14 overflow-hidden">
               <h1 className="text-sm md:text-md font-semibold text-black">
-                Nama Produk - Variasi Produk - Sub Varian Produk
+                {product.title}
               </h1>
             </div>
             <div className="flex flex-col">
               <h1 className="text-sm md:text-xl font-extrabold text-black">
-                Rp24.000
+                ${product.price}
               </h1>
               <div className="flex gap-2">
-                <h1 className="text-gray-400 line-through text-xs">Rp24.000</h1>
+                <h1 className="text-gray-400 line-through text-xs">${product.price * 80/100}</h1>
                 <span className="text-red-500 font-bold text-xs">20%</span>
               </div>
             </div>

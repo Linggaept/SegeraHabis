@@ -15,7 +15,7 @@ const Navbar = () => {
                 </Link>
               </h1>
             </div>
-            <div className="items-end w-1/4 gap-10 hidden md:block ">
+            <div className="items-end w-1/4 gap-10 hidden md:flex ">
               <Link href={"/"}>
                 <h1 className="text-sm font-medium">Tentang SegeraHabis</h1>
               </Link>
@@ -26,13 +26,15 @@ const Navbar = () => {
           </div>
 
           <div className="p-5 w-11/12 flex mx-auto items-center">
-            <div className=" justify-start w-2/12">
-              <Image
-                src={"/svg/Logo.svg"}
-                alt="Logo"
-                width={150}
-                height={150}
-              />
+            <div className="justify-start w-2/12">
+              <Link href={"/"}>
+                <Image
+                  src={"/svg/Logo.svg"}
+                  alt="Logo"
+                  width={150}
+                  height={150}
+                />
+              </Link>
             </div>
 
             <div className="flex justify-center w-8/12 ">
@@ -46,12 +48,14 @@ const Navbar = () => {
                   type="submit"
                   className="h-8 md:h-12 bg-green-700 py-1 px-5 rounded-r-lg border-2 border-green-700 hover:bg-green-600 duration-300 hover:border-green-600"
                 >
-                  <h1 className="text-xs md:text-sm font-medium text-white">Cari</h1>
+                  <h1 className="text-xs md:text-sm font-medium text-white">
+                    Cari
+                  </h1>
                 </button>
               </form>
             </div>
 
-            <div className="flex justify-end gap-5 items-center hidden w-1/4">
+            <div className="md:flex justify-end gap-5 items-center hidden w-1/4">
               <Link href={"/#"} className="">
                 <h1 className="text-sm font-bold text-green-700 bg-white py-2 px-5 rounded-md border-2 border-green-700 hover:bg-green-600 duration-300 hover:text-white">
                   Masuk
