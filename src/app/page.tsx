@@ -1,17 +1,18 @@
-"use client"
+"use client";
 
 import CarouselLanding from "@/components/Carousel";
 import Navbar from "./Navbar";
 import Card from "@/components/Card";
 import Category from "@/components/Category";
 import Footer from "./Footer";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { fetchProducts } from "@/services/helper/productApi";
+import { fetchCategories } from "@/services/helper/productApi";
 
 export default function Home() {
-
   const [products, setProducts] = useState([]);
-  
+  const [category, setCategory] = useState([]);
+
   useEffect(() => {
     const getProduct = async () => {
       try {
@@ -25,7 +26,18 @@ export default function Home() {
     getProduct();
   }, []);
 
-  
+  useEffect(() => {
+    const getCategory = async () => {
+      try{
+        const data = await fetchCategories();
+        setCategory(data);
+      } catch (error) {
+        console.log("Failed to fetch products: ", error);
+      }
+    }
+
+    getCategory()
+  },[])
 
   return (
     <>
@@ -38,19 +50,9 @@ export default function Home() {
               Kategori
             </h1>
             <div className="grid md:grid-cols-4 grid-cols-2 gap-5">
-              <Category />
-              <Category />
-              <Category />
-              <Category />
-              <Category />
-              <Category />
-              <Category />
-              <Category />
-              <Category />
-              <Category />
-              <Category />
-              <Category />
-              <Category />
+              {category.map((category: string) => (
+                <Category key={category} category={category} />
+              ))}
             </div>
           </div>
           <div className="w-full py-5">

@@ -1,52 +1,8 @@
-"use client";
-
-import { useQuery } from "@tanstack/react-query";
-import Image from "next/image";
 import Navbar from "@/app/Navbar";
-import { SlCalender } from "react-icons/sl";
 import { FaCartPlus } from "react-icons/fa";
-import { useEffect, useState } from "react";
-import { fetchProducts } from "@/services/helper/productApi";
-import Card from "@/components/Card";
-import LoadingDetailProduct from "@/components/Loading/LoadingDetailProduct";
+import { SlCalender } from "react-icons/sl";
 
-const fetchProduct = async (id: string) => {
-  const res = await fetch(`https://fakestoreapi.com/products/${id}`);
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-  return res.json();
-};
-const ProductDetailClient = ({ id }: { id: string }) => {
-  const [products, setProducts] = useState([]);
-  useEffect(() => {
-    const getProduct = async () => {
-      try {
-        const data = await fetchProducts();
-        setProducts(data);
-      } catch (error) {
-        console.log("Failed to fetch products: ", error);
-      }
-    };
-
-    getProduct();
-  }, []);
-  const {
-    data: product,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["product", id],
-    queryFn: () => fetchProduct(id),
-  });
-
-  if (isLoading) {
-    return <div><LoadingDetailProduct /></div>;
-  }
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
-
+const LoadingDetailProduct = () => {
   return (
     <>
       <Navbar />
@@ -55,18 +11,11 @@ const ProductDetailClient = ({ id }: { id: string }) => {
           <div className="flex flex-col gap-5">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mx-auto w-11/12">
               <div className="w-full">
-                <Image
-                  src={product.image}
-                  alt={product.title}
-                  width={500}
-                  height={500}
-                  className="w-full object-cover aspect-square rounded-lg"
-                />
+                <div className="bg-gray-400 rounded-md aspect-square animate-pulse"></div>
               </div>
               <div className="w-full flex flex-col gap-10">
                 <div className="flex flex-col gap-2">
-                  <h1 className="text-2xl md:text-3xl font-extrabold text-black">
-                    {product.title}
+                  <h1 className="text-2xl md:text-3xl font-extrabold bg-gray-400 rounded-md w-full">
                   </h1>
                   <div className="flex gap-2 items-center">
                     <span>
@@ -78,8 +27,8 @@ const ProductDetailClient = ({ id }: { id: string }) => {
                   </div>
                 </div>
                 <div className="flex">
-                  <h1 className="text-3xl md:text-4xl font-extrabold text-black">
-                    ${product.price}
+                  <h1 className="text-3xl md:text-4xl font-extrabold bg-gray-400 rounded-md w-full aspect-auto">
+                    
                   </h1>
                 </div>
                 <div className="flex flex-col">
@@ -119,26 +68,18 @@ const ProductDetailClient = ({ id }: { id: string }) => {
                 </div>
                 <div className="flex flex-col">
                   <h1 className="text-gray-600 text-sm font-normal">
-                    Kategori : {product.category}
+                    Kategori : 
                   </h1>
                   <h1 className="text-gray-600 text-sm font-normal">
                     Deskripsi :{" "}
                   </h1>
                 </div>
                 <div className="flex">
-                  <h1 className="text-black text-sm font-normal">
-                    {product.description}
+                  <h1 className="text-black text-sm font-normal bg-gray-400 rounded-md w-full">
+                    
                   </h1>
                 </div>
               </div>
-            </div>
-          </div>
-
-          <div className="w-11/12 mt-10 mx-auto">
-            <div className="w-full grid grid-cols-2 md:grid-cols-5 gap-5">
-              {products.map((product: any) => (
-                <Card key={product.id} product={product} />
-              ))}
             </div>
           </div>
         </div>
@@ -147,4 +88,4 @@ const ProductDetailClient = ({ id }: { id: string }) => {
   );
 };
 
-export default ProductDetailClient;
+export default LoadingDetailProduct;
