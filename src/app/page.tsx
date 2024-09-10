@@ -28,46 +28,48 @@ export default function Home() {
 
   useEffect(() => {
     const getCategory = async () => {
-      try{
+      try {
         const data = await fetchCategories();
         setCategory(data);
       } catch (error) {
         console.log("Failed to fetch products: ", error);
       }
-    }
+    };
 
-    getCategory()
-  },[])
+    getCategory();
+  }, []);
 
   return (
     <>
-      <Navbar />
-      <main className="flex flex-col items-center w-11/12 px-1 md:px-5 mx-auto">
-        <div className="w-full">
-          <CarouselLanding />
-          <div className="w-full py-5">
-            <h1 className="text-2xl font-extrabold text-black py-5">
-              Kategori
-            </h1>
-            <div className="grid md:grid-cols-4 grid-cols-2 gap-5">
-              {category.map((category: string) => (
-                <Category key={category} category={category} />
-              ))}
+      <div className="w-full overflow-hidden">
+        <Navbar />
+        <main className="flex flex-col items-center w-11/12 px-1 md:px-5 mx-auto">
+          <div className="w-full">
+            <CarouselLanding />
+            <div className="w-full py-5">
+              <h1 className="text-2xl font-extrabold text-black py-5">
+                Kategori
+              </h1>
+              <div className="grid md:grid-cols-4 grid-cols-2 gap-5">
+                {category.map((category: string) => (
+                  <Category key={category} category={category} />
+                ))}
+              </div>
+            </div>
+            <div className="w-full py-5">
+              <h1 className="text-2xl font-extrabold text-black py-5">
+                Produk Kami
+              </h1>
+              <div className="w-full grid grid-cols-2 md:grid-cols-5 gap-5">
+                {products.map((product: any) => (
+                  <Card key={product.id} product={product} />
+                ))}
+              </div>
             </div>
           </div>
-          <div className="w-full py-5">
-            <h1 className="text-2xl font-extrabold text-black py-5">
-              Produk Kami
-            </h1>
-            <div className="w-full grid grid-cols-2 md:grid-cols-5 gap-5">
-              {products.map((product: any) => (
-                <Card key={product.id} product={product} />
-              ))}
-            </div>
-          </div>
-        </div>
-      </main>
-      <Footer />
+        </main>
+        <Footer />
+      </div>
     </>
   );
 }

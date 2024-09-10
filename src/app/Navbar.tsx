@@ -1,7 +1,29 @@
 import Image from "next/image";
 import Link from "next/link";
-
+import { useEffect, useState } from "react";
+import { FaCartShopping } from "react-icons/fa6";
 const Navbar = () => {
+  const [cekToken, setCekToken] = useState(false);
+  const [username, setUsername] = useState<string | null>(null);
+
+  useEffect(() => {
+    const username = localStorage.getItem("username");
+    if (username) {
+      setUsername(username);
+    } else {
+      setUsername(null);
+    }
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setCekToken(true);
+    } else {
+      setCekToken(false);
+    }
+  }, []);
+
   return (
     <>
       <nav>
@@ -55,18 +77,31 @@ const Navbar = () => {
               </form>
             </div>
 
-            <div className="md:flex justify-end gap-5 items-center hidden w-1/4">
-              <Link href={"/#"} className="">
-                <h1 className="text-sm font-bold text-green-700 bg-white py-2 px-5 rounded-md border-2 border-green-700 hover:bg-green-600 duration-300 hover:text-white">
-                  Masuk
-                </h1>
-              </Link>
-              <Link href={"/#"} className="">
-                <h1 className="text-sm font-bold text-white bg-green-700 py-2 px-5 rounded-md border-2 border-green-700 hover:bg-white duration-300 hover:border-green-600 hover:text-green-600">
-                  Daftar
-                </h1>
-              </Link>
-            </div>
+            {cekToken ? (
+              <div className="md:flex justify-end gap-5 items-center hidden w-1/4">
+                <Link href={"/login"} className="">
+                  <h1 className="text-sm font-bold text-black">{username}</h1>
+                </Link>
+                <Link href={"/#"} className="">
+                  <span className="text-sm font-bold text-gray-600 flex">
+                    <FaCartShopping className="w-5 h-5" />
+                  </span>
+                </Link>
+              </div>
+            ) : (
+              <div className="md:flex justify-end gap-5 items-center hidden w-1/4">
+                <Link href={"/login"} className="">
+                  <h1 className="text-sm font-bold text-green-700 bg-white py-2 px-5 rounded-md border-2 border-green-700 hover:bg-green-600 duration-300 hover:text-white">
+                    Masuk
+                  </h1>
+                </Link>
+                <Link href={"/#"} className="">
+                  <h1 className="text-sm font-bold text-white bg-green-700 py-2 px-5 rounded-md border-2 border-green-700 hover:bg-white duration-300 hover:border-green-600 hover:text-green-600">
+                    Daftar
+                  </h1>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </nav>
