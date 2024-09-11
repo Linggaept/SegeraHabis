@@ -20,6 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { login } from "@/services/api"; // Import login function
 import { stringify } from "querystring";
+import { secureHeapUsed } from "crypto";
 
 // Skema validasi dengan zod
 const formSchema = z.object({
@@ -67,44 +68,50 @@ export default function ProfileForm() {
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder="shadcn" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input type="password" placeholder="password" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+    <section className="w-full  min-h-screen justify-center flex items-center">
+      <div className="lg:w-1/4 sm:w-1/2 w-3/4 p-5 mx-auto border border-gray-200 rounded-md shadow-xl">
+        <div className="w-full mx-auto">
+          <h1 className="text-4xl font-extrabold text-green-700 py-5 text-center">
+            Login
+          </h1>
+        </div>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Username</FormLabel>
+                  <FormControl>
+                    <Input placeholder="username" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" placeholder="password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-        {error && <p className="text-red-500">{error}</p>}
+            {error && <p className="text-red-500">{error}</p>}
 
-        <Button type="submit" disabled={loading}>
-          {loading ? "Logging in..." : "Submit"}
-        </Button>
-      </form>
-    </Form>
+            <Button type="submit" disabled={loading}>
+              {loading ? "Logging in..." : "Login"}
+            </Button>
+          </form>
+        </Form>
+      </div>
+    </section>
   );
 }

@@ -14,7 +14,7 @@ interface ProductProps {
 const Card = ({ product } : ProductProps) => {
   return (
     <Link href={`/Product/${product.id}`}>
-      <div className="max-w-sm bg-white border-2 border-gray-200 rounded-lg shadow">
+      <div className="max-w-sm bg-white border-2 border-gray-200 rounded-lg shadow overflow-hidden">
         <div className="flex flex-col">
           <Image
             src={product.image}

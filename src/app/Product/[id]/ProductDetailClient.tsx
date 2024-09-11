@@ -12,7 +12,7 @@ import LoadingDetailProduct from "@/components/Loading/LoadingDetailProduct";
 
 const fetchProduct = async (id: string) => {
   const res = await fetch(`https://fakestoreapi.com/products/${id}`);
-  if (!res.ok) {  
+  if (!res.ok) {
     throw new Error("Failed to fetch data");
   }
   return res.json();
@@ -41,11 +41,22 @@ const ProductDetailClient = ({ id }: { id: string }) => {
   });
 
   if (isLoading) {
-    return <div><LoadingDetailProduct /></div>;
+    return (
+      <div>
+        <LoadingDetailProduct />
+      </div>
+    );
   }
   if (error) {
     return <div>Error: {error.message}</div>;
   }
+
+  const addToCart = () => {
+    const cekToken = localStorage.getItem("token");
+    if (!cekToken) {
+      window.location.href = "/login";
+    }
+  };
 
   return (
     <>
@@ -102,9 +113,11 @@ const ProductDetailClient = ({ id }: { id: string }) => {
                       <FaCartPlus className="w-3 h-3 md:w-6 md:h-6 text-white" />
                     </span>
                     <span>
-                      <h1 className="text-lg font-semibold text-white">
-                        Tambahkan ke Keranjang
-                      </h1>
+                      <button onClick={addToCart}>
+                        <h1 className="text-lg font-semibold text-white">
+                          Tambahkan ke Keranjang
+                        </h1>
+                      </button>
                     </span>
                   </button>
                 </div>
