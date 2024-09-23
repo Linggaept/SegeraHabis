@@ -7,3 +7,7 @@ export const fetchProducts = async () => {
 export const fetchCategories = async () => {
   return await fetchData("products/categories");
 };
+
+export const fetchProductbyCategory = async (id: string) => {
+  return await fetchData(`products/category/${id}`);
+};
