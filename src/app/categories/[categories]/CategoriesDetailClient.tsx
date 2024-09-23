@@ -8,20 +8,24 @@ import {
 import { useEffect, useState } from "react";
 import CardCategories from "../CardCategories";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 const CategoriesDetailClient = () => {
   const [category, setCategory] = useState<string | null>(null);
   const [products, setProducts] = useState([]);
   const [categoriesList, setCategoriesList] = useState([]);
-  const pathname = usePathname();
+  const pathname = usePathname(); // Menggunakan usePathname
 
+  const formatCategoryName = (categoryName: string) => {
+    const decodedCategoryName = decodeURIComponent(categoryName);
+
+    return decodedCategoryName
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+  // Fetch categories once when component is mounted
   useEffect(() => {
-    // Pastikan router dan asPath ada sebelum menggunakan split
-
-    const currentPath = pathname.split("/");
-    const categoryFromUrl = currentPath[2]; // Mengambil kategori dari URL
-    setCategory(categoryFromUrl);
-
     const getCategories = async () => {
       try {
         const data = await fetchCategories();
@@ -32,13 +36,18 @@ const CategoriesDetailClient = () => {
     };
 
     getCategories();
-  }, [pathname]);
+  }, []); // This useEffect runs only once when the component mounts
 
+  // Fetch products and update category whenever the pathname changes
   useEffect(() => {
+    const currentPath = pathname.split("/"); // Mengambil pathname dan membaginya
+    const categoryFromUrl = currentPath[2]; // Mengambil kategori dari pathname
+    setCategory(categoryFromUrl);
+
     const getProductbyCategory = async () => {
-      if (category) {
+      if (categoryFromUrl) {
         try {
-          const data = await fetchProductbyCategory(category);
+          const data = await fetchProductbyCategory(categoryFromUrl);
           setProducts(data);
         } catch (error) {
           console.log("Failed to fetch products: ", error);
@@ -47,7 +56,7 @@ const CategoriesDetailClient = () => {
     };
 
     getProductbyCategory();
-  }, [category]);
+  }, [pathname]); // Dependency: runs when pathname changes
 
   return (
     <div>
@@ -64,16 +73,19 @@ const CategoriesDetailClient = () => {
                   key={index}
                   className="flex flex-col rounded-md cursor-pointer hover:underline hover:text-green-700"
                 >
-                  <a href={`/categories/${item}`} className={"w-full"}>
-                    <h1 className="text-sm">{item}</h1>
-                  </a>
+                  <Link href={`/categories/${item}`} className={"w-full"}>
+                    <h1 className="text-sm">
+                      {formatCategoryName(item)}
+                    </h1>
+                  </Link>
                 </div>
               ))}
             </div>
           </div>
           <div className="flex flex-col w-3/4">
             <h1 className="text-xl">
-              Berdasarkan Kategori <span className="font-bold">{category}</span>
+              Berdasarkan Kategori{" "}
+              <span className="font-bold">"{category && formatCategoryName(category)}"</span>
             </h1>
 
             <div className="w-full grid grid-cols-2 md:grid-cols-3 gap-5 mt-4">
