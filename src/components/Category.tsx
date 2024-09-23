@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function Category({category} : any) {
   return (
     <>
-      <Link href={`/Categories/${category}`}>
+      <Link href={`/categories/${category}`}>
       <h1>{category}</h1>
         {/* <Image
           src={"/img/carousel/SegeraHabis_Slider_1.png"}

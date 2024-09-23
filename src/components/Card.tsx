@@ -11,10 +11,10 @@ interface ProductProps {
   };
 }
 
-const Card = ({ product } : ProductProps) => {
+const Card = ({ product }: ProductProps) => {
   return (
     <Link href={`/Product/${product.id}`}>
-      <div className="max-w-sm bg-white border-2 border-gray-200 rounded-lg shadow overflow-hidden">
+      <div className="max-w-sm bg-white border-2 border-gray-200 rounded-lg shadow overflow-hidden hover:scale-105 duration-300 hover:shadow-lg hover:shadow-green-700">
         <div className="flex flex-col">
           <Image
             src={product.image}
@@ -34,7 +34,9 @@ const Card = ({ product } : ProductProps) => {
                 ${product.price}
               </h1>
               <div className="flex gap-2">
-                <h1 className="text-gray-400 line-through text-xs">${product.price * 80/100}</h1>
+                <h1 className="text-gray-400 line-through text-xs">
+                  ${(product.price * 80) / 100}
+                </h1>
                 <span className="text-red-500 font-bold text-xs">20%</span>
               </div>
             </div>

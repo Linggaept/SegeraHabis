@@ -12,7 +12,6 @@ import { fetchCategories } from "@/services/helper/productApi";
 export default function Home() {
   const [products, setProducts] = useState([]);
   const [category, setCategory] = useState([]);
-  
 
 
   useEffect(() => {

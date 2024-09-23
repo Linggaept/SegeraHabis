@@ -1,3 +1,4 @@
+"use client"
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -5,6 +6,7 @@ import { FaCartShopping } from "react-icons/fa6";
 const Navbar = () => {
   const [cekToken, setCekToken] = useState(false);
   const [username, setUsername] = useState<string | null>(null);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const username = localStorage.getItem("username");
@@ -63,6 +65,9 @@ const Navbar = () => {
               <form action="" className="flex">
                 <input
                   type="text"
+                  value={search}
+                  name="search"
+                  onChange={(e) => setSearch(e.target.value)}
                   placeholder="Cari produk favoritmu"
                   className="w-30 h-8 text-xs md:h-12 md:text-md md:w-96 p-3 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-green-700"
                 />
@@ -78,7 +83,7 @@ const Navbar = () => {
             </div>
 
             {cekToken ? (
-              <div className="md:flex justify-end gap-5 items-center hidden w-1/4">
+              <div className="lg:flex lg:visible justify-end gap-5 items-center invisible w-1/4 duration-300">
                 <Link href={"/login"} className="">
                   <h1 className="text-sm font-bold text-black">{username}</h1>
                 </Link>
@@ -89,7 +94,7 @@ const Navbar = () => {
                 </Link>
               </div>
             ) : (
-              <div className="md:flex justify-end gap-5 items-center hidden w-1/4">
+              <div className="lg:flex lg:visible justify-end gap-5 items-center invisible w-1/4 duration-300">
                 <Link href={"/login"} className="">
                   <h1 className="text-sm font-bold text-green-700 bg-white py-2 px-5 rounded-md border-2 border-green-700 hover:bg-green-600 duration-300 hover:text-white">
                     Masuk

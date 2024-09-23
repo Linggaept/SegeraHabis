@@ -65,13 +65,13 @@ const ProductDetailClient = ({ id }: { id: string }) => {
         <div className="w-11/12 p-5">
           <div className="flex flex-col gap-5">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mx-auto w-11/12">
-              <div className="w-full">
+              <div className="w-full overflow-hidden">
                 <Image
                   src={product.image}
                   alt={product.title}
                   width={500}
                   height={500}
-                  className="w-full object-cover aspect-square rounded-lg"
+                  className="w-full object-cover aspect-square rounded-lg  hover:scale-110 duration-300"
                 />
               </div>
               <div className="w-full flex flex-col gap-10">
