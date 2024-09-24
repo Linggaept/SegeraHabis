@@ -9,15 +9,20 @@ import { useEffect, useState } from "react";
 import CardCategories from "../CardCategories";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import LoadingSortByCategories from "@/components/Loading/LoadingSortByCategories";
 
 const CategoriesDetailClient = () => {
   const [category, setCategory] = useState<string | null>(null);
   const [products, setProducts] = useState([]);
   const [categoriesList, setCategoriesList] = useState([]);
   const pathname = usePathname(); // Menggunakan usePathname
+  const [loading, setLoading] = useState(false);
 
   const formatCategoryName = (categoryName: string) => {
-    const decodedCategoryName = decodeURIComponent(categoryName);
+    const decodedCategoryName = decodeURIComponent(categoryName).replace(
+      /%27/g,
+      "'"
+    );
 
     return decodedCategoryName
       .split(" ")
@@ -28,8 +33,10 @@ const CategoriesDetailClient = () => {
   useEffect(() => {
     const getCategories = async () => {
       try {
+        setLoading(true);
         const data = await fetchCategories();
         setCategoriesList(data);
+        setLoading(false);
       } catch (error) {
         console.log("Failed to fetch categories: ", error);
       }
@@ -41,14 +48,16 @@ const CategoriesDetailClient = () => {
   // Fetch products and update category whenever the pathname changes
   useEffect(() => {
     const currentPath = pathname.split("/"); // Mengambil pathname dan membaginya
-    const categoryFromUrl = currentPath[2]; // Mengambil kategori dari pathname
+    const categoryFromUrl = decodeURIComponent(currentPath[2]); // Mengambil kategori dari pathname
     setCategory(categoryFromUrl);
 
     const getProductbyCategory = async () => {
       if (categoryFromUrl) {
         try {
+          setLoading(true);
           const data = await fetchProductbyCategory(categoryFromUrl);
           setProducts(data);
+          setLoading(false);
         } catch (error) {
           console.log("Failed to fetch products: ", error);
         }
@@ -58,6 +67,9 @@ const CategoriesDetailClient = () => {
     getProductbyCategory();
   }, [pathname]); // Dependency: runs when pathname changes
 
+  if (loading) {
+    return <LoadingSortByCategories />;
+  }
   return (
     <div>
       <Navbar />
@@ -68,24 +80,33 @@ const CategoriesDetailClient = () => {
               <h1 className="text-xl font-bold">Kategori</h1>
             </div>
             <div className="flex flex-col p-2 border-2 border-gray-200 shadow-sm rounded-md mt-4 gap-2">
-              {categoriesList.map((item: string, index) => (
-                <div
-                  key={index}
-                  className="flex flex-col rounded-md cursor-pointer hover:underline hover:text-green-700"
-                >
-                  <Link href={`/categories/${item}`} className={"w-full"}>
-                    <h1 className="text-sm">
-                      {formatCategoryName(item)}
-                    </h1>
-                  </Link>
-                </div>
-              ))}
+              {categoriesList.map((item: string, index) => {
+                const decodedItem = decodeURIComponent(item).replace(
+                  /%27/g,
+                  "'"
+                );
+
+                return (
+                  <div
+                    key={index}
+                    className={`flex flex-col rounded-md cursor-pointer hover:underline hover:text-green-700 ${
+                      category === decodedItem ? "underline text-green-700 active-category" : ""
+                    }`}
+                  >
+                    <Link href={`/categories/${item}`} className={"w-full"}>
+                      <h1 className="text-sm">{formatCategoryName(item)}</h1>
+                    </Link>
+                  </div>
+                );
+              })}
             </div>
           </div>
           <div className="flex flex-col w-3/4">
             <h1 className="text-xl">
               Berdasarkan Kategori{" "}
-              <span className="font-bold">"{category && formatCategoryName(category)}"</span>
+              <span className="font-bold">
+                "{category && formatCategoryName(category)}"
+              </span>
             </h1>
 
             <div className="w-full grid grid-cols-2 md:grid-cols-3 gap-5 mt-4">
